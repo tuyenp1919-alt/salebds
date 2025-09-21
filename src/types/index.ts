@@ -24,23 +24,37 @@ export interface AuthState {
 // ============ CUSTOMER (CRM) TYPES ============
 export interface Customer {
   id: string;
-  fullName: string;
+  // Primary identity
+  fullName?: string; // preferred new field
+  name?: string; // legacy field used in several components
   phone: string;
   email?: string;
   avatar?: string;
+  
+  // CRM fields used in UI components (legacy-compatible)
+  company?: string | null;
+  position?: string | null;
+  address?: string | null;
   status: CustomerStatus;
-  source: CustomerSource;
-  assignedTo: string; // user ID
+  priority?: 'low' | 'medium' | 'high';
+  source?: CustomerSource | string; // allow free text sources like "Giới thiệu"
+  totalValue?: number; // Lifetime value or potential deal value
+  lastContactedAt?: Date | null;
+  
+  // Assignment
+  assignedTo?: string; // user ID
+  
+  // Audit
   createdAt: Date;
   updatedAt: Date;
   
-  // Thông tin nhu cầu
-  budget: {
+  // Nhu cầu (optional in current mocks)
+  budget?: {
     min: number;
     max: number;
     currency: 'VND' | 'USD';
   };
-  preferences: {
+  preferences?: {
     propertyType: PropertyType[];
     location: string[];
     area?: { min: number; max: number };
@@ -51,17 +65,23 @@ export interface Customer {
   // Thông tin cá nhân (cho phong thủy)
   birthYear?: number;
   notes?: string;
-  tags: string[];
+  tags?: string[];
 }
 
 export type CustomerStatus = 
-  | 'new' // Khách mới
-  | 'contacted' // Đã liên hệ
-  | 'interested' // Quan tâm
-  | 'viewing' // Đang xem
-  | 'negotiating' // Đàm phán
-  | 'closed' // Chốt deal
-  | 'lost'; // Mất khách
+  // Legacy statuses used by current UI and mock service
+  | 'lead' 
+  | 'prospect' 
+  | 'customer' 
+  | 'inactive'
+  // Extended statuses for richer pipelines
+  | 'new' 
+  | 'contacted' 
+  | 'interested' 
+  | 'viewing' 
+  | 'negotiating' 
+  | 'closed' 
+  | 'lost';
 
 export type CustomerSource = 
   | 'website' 

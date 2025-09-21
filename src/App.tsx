@@ -19,16 +19,16 @@ const CustomersPage = React.lazy(() => import('@/pages/Customers'));
 const CustomerDetailsPage = React.lazy(() => import('@/pages/customers/CustomerDetailsPage'));
 const PropertiesPage = React.lazy(() => import('@/pages/Properties'));
 const PropertyDetailsPage = React.lazy(() => import('@/pages/properties/PropertyDetailsPage'));
-// const ProjectsPage = React.lazy(() => import('@/pages/projects/ProjectsPage'));
+const ProjectsPage = React.lazy(() => import('@/pages/ProjectsPage'));
 // const ProjectDetailsPage = React.lazy(() => import('@/pages/projects/ProjectDetailsPage'));
-// const InteractionsPage = React.lazy(() => import('@/pages/interactions/InteractionsPage'));
+const InteractionsPage = React.lazy(() => import('@/pages/InteractionsPage'));
 const AnalyticsPage = React.lazy(() => import('@/pages/analytics/AnalyticsPage'));
-// const ReportsPage = React.lazy(() => import('@/pages/reports/ReportsPage'));
+const ReportsPage = React.lazy(() => import('@/pages/ReportsPage'));
 const MarketingPage = React.lazy(() => import('@/pages/MarketingPage'));
 const FengShuiPage = React.lazy(() => import('@/pages/FengShuiPage'));
-// const TrainingPage = React.lazy(() => import('@/pages/training/TrainingPage'));
+const TrainingPage = React.lazy(() => import('@/pages/TrainingPage'));
 const SettingsPage = React.lazy(() => import('@/pages/settings/SettingsPage'));
-// const ProfilePage = React.lazy(() => import('@/pages/profile/ProfilePage'));
+const ProfilePage = React.lazy(() => import('@/pages/ProfilePage'));
 const NotFoundPage = React.lazy(() => import('@/pages/NotFoundPage'));
 
 // Protected Route Component
@@ -172,14 +172,13 @@ const App: React.FC = () => {
           } />
 
           {/* Projects Routes */}
-          {/* Projects - not implemented yet */}
-          {/* <Route path="/projects" element={
+          <Route path="/projects" element={
             <ProtectedRoute>
               <Layout>
                 <ProjectsPage />
               </Layout>
             </ProtectedRoute>
-          } /> */}
+          } />
           
           {/* Project details - not implemented yet */}
           {/* <Route path="/projects/:projectId" element={
@@ -191,14 +190,13 @@ const App: React.FC = () => {
           } /> */}
 
           {/* Interactions Route */}
-          {/* Interactions - not implemented yet */}
-          {/* <Route path="/interactions" element={
+          <Route path="/interactions" element={
             <ProtectedRoute>
               <Layout>
                 <InteractionsPage />
               </Layout>
             </ProtectedRoute>
-          } /> */}
+          } />
 
           {/* Analytics & Reports Routes */}
           <Route path="/analytics" element={
@@ -209,14 +207,14 @@ const App: React.FC = () => {
             </ProtectedRoute>
           } />
           
-          {/* Reports - not implemented yet */}
-          {/* <Route path="/reports" element={
+          {/* Reports */}
+          <Route path="/reports" element={
             <ProtectedRoute>
               <Layout>
                 <ReportsPage />
               </Layout>
             </ProtectedRoute>
-          } /> */}
+          } />
 
           {/* Marketing Route */}
           <Route path="/marketing" element={
@@ -236,14 +234,14 @@ const App: React.FC = () => {
             </ProtectedRoute>
           } />
 
-          {/* Training Route - not implemented yet */}
-          {/* <Route path="/training" element={
+          {/* Training Route */}
+          <Route path="/training" element={
             <ProtectedRoute>
               <Layout>
                 <TrainingPage />
               </Layout>
             </ProtectedRoute>
-          } /> */}
+          } />
 
           {/* Settings & Profile Routes */}
           <Route path="/settings" element={
@@ -254,14 +252,14 @@ const App: React.FC = () => {
             </ProtectedRoute>
           } />
           
-          {/* Profile - not implemented yet */}
-          {/* <Route path="/profile" element={
+          {/* Profile */}
+          <Route path="/profile" element={
             <ProtectedRoute>
               <Layout>
                 <ProfilePage />
               </Layout>
             </ProtectedRoute>
-          } /> */}
+          } />
 
           {/* Root redirect */}
           <Route path="/" element={
