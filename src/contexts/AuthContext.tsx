@@ -18,6 +18,98 @@ interface RegisterData {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
+// Mock API functions (moved up to fix hoisting issue)
+const validateToken = async (token: string): Promise<boolean> => {
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 300));
+  
+  // Mock validation - in real app, verify with backend
+  return token ? token.startsWith('mock-jwt-token') : false;
+};
+
+const mockLogin = async (email: string, password: string) => {
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  
+  // Mock validation
+  if (email === 'demo@salebds.com' && password === 'demo123') {
+    const user: User = {
+      id: '1',
+      email: 'demo@salebds.com',
+      fullName: 'Demo User',
+      avatar: undefined,
+      phone: '0901234567',
+      role: 'sales',
+      team: 'Team Alpha',
+      createdAt: new Date('2024-01-01'),
+      updatedAt: new Date(),
+      isActive: true,
+    };
+    
+    return {
+      user,
+      token: 'mock-jwt-token-' + Date.now(),
+      refreshToken: 'mock-refresh-token-' + Date.now(),
+      expiresIn: 3600,
+    };
+  } else {
+    throw new Error('Email hoặc mật khẩu không chính xác');
+  }
+};
+
+const mockRegister = async (data: RegisterData) => {
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  
+  // Mock validation
+  if (data.email === 'existing@salebds.com') {
+    throw new Error('Email đã được sử dụng');
+  }
+  
+  const user: User = {
+    id: Date.now().toString(),
+    email: data.email,
+    fullName: data.fullName,
+    phone: data.phone,
+    role: 'sales',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    isActive: true,
+  };
+  
+  return {
+    user,
+    token: 'mock-jwt-token-' + Date.now(),
+    refreshToken: 'mock-refresh-token-' + Date.now(),
+  };
+};
+
+const mockRefreshToken = async (refreshToken: string) => {
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 500));
+  
+  // Mock refresh logic
+  if (!refreshToken || !refreshToken.startsWith('mock-refresh-token')) {
+    throw new Error('Invalid refresh token');
+  }
+  
+  try {
+    const userData = typeof window !== 'undefined' ? localStorage.getItem('auth_user') : null;
+    if (!userData) {
+      throw new Error('No user data found');
+    }
+    
+    const user: User = JSON.parse(userData);
+    
+    return {
+      token: 'mock-jwt-token-' + Date.now(),
+      user,
+    };
+  } catch (error) {
+    throw new Error('Failed to refresh token');
+  }
+};
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -221,94 +313,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
-};
-
-// Mock API functions (replace with real API calls)
-const mockLogin = async (email: string, password: string) => {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  
-  // Mock validation
-  if (email === 'demo@salebds.com' && password === 'demo123') {
-    const user: User = {
-      id: '1',
-      email: 'demo@salebds.com',
-      fullName: 'Demo User',
-      avatar: undefined,
-      phone: '0901234567',
-      role: 'sales',
-      team: 'Team Alpha',
-      createdAt: new Date('2024-01-01'),
-      updatedAt: new Date(),
-      isActive: true,
-    };
-    
-    return {
-      user,
-      token: 'mock-jwt-token-' + Date.now(),
-      refreshToken: 'mock-refresh-token-' + Date.now(),
-      expiresIn: 3600,
-    };
-  } else {
-    throw new Error('Email hoặc mật khẩu không chính xác');
-  }
-};
-
-const mockRegister = async (data: RegisterData) => {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  
-  // Mock validation
-  if (data.email === 'existing@salebds.com') {
-    throw new Error('Email đã được sử dụng');
-  }
-  
-  const user: User = {
-    id: Date.now().toString(),
-    email: data.email,
-    fullName: data.fullName,
-    phone: data.phone,
-    role: 'sales',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    isActive: true,
-  };
-  
-  return {
-    user,
-    token: 'mock-jwt-token-' + Date.now(),
-    refreshToken: 'mock-refresh-token-' + Date.now(),
-  };
-};
-
-const mockRefreshToken = async (refreshToken: string) => {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 500));
-  
-  // Mock refresh logic
-  if (!refreshToken.startsWith('mock-refresh-token')) {
-    throw new Error('Invalid refresh token');
-  }
-  
-  const userData = localStorage.getItem('auth_user');
-  if (!userData) {
-    throw new Error('No user data found');
-  }
-  
-  const user: User = JSON.parse(userData);
-  
-  return {
-    token: 'mock-jwt-token-' + Date.now(),
-    user,
-  };
-};
-
-const validateToken = async (token: string): Promise<boolean> => {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 300));
-  
-  // Mock validation - in real app, verify with backend
-  return token.startsWith('mock-jwt-token');
 };
 
 export default AuthContext;
