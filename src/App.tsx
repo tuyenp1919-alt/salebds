@@ -16,19 +16,19 @@ const ForgotPasswordPage = React.lazy(() => import('@/pages/auth/ForgotPasswordP
 // Main App Pages (Lazy loaded)
 const DashboardPage = React.lazy(() => import('@/pages/dashboard/DashboardPage'));
 const CustomersPage = React.lazy(() => import('@/pages/Customers'));
-const CustomerDetailsPage = React.lazy(() => import('@/pages/customers/CustomerDetailsPage'));
+// const CustomerDetailsPage = React.lazy(() => import('@/pages/customers/CustomerDetailsPage'));
 const PropertiesPage = React.lazy(() => import('@/pages/Properties'));
-const PropertyDetailsPage = React.lazy(() => import('@/pages/properties/PropertyDetailsPage'));
-const ProjectsPage = React.lazy(() => import('@/pages/projects/ProjectsPage'));
-const ProjectDetailsPage = React.lazy(() => import('@/pages/projects/ProjectDetailsPage'));
-const InteractionsPage = React.lazy(() => import('@/pages/interactions/InteractionsPage'));
+// const PropertyDetailsPage = React.lazy(() => import('@/pages/properties/PropertyDetailsPage'));
+// const ProjectsPage = React.lazy(() => import('@/pages/projects/ProjectsPage'));
+// const ProjectDetailsPage = React.lazy(() => import('@/pages/projects/ProjectDetailsPage'));
+// const InteractionsPage = React.lazy(() => import('@/pages/interactions/InteractionsPage'));
 const AnalyticsPage = React.lazy(() => import('@/pages/analytics/AnalyticsPage'));
-const ReportsPage = React.lazy(() => import('@/pages/reports/ReportsPage'));
+// const ReportsPage = React.lazy(() => import('@/pages/reports/ReportsPage'));
 const MarketingPage = React.lazy(() => import('@/pages/MarketingPage'));
 const FengShuiPage = React.lazy(() => import('@/pages/FengShuiPage'));
-const TrainingPage = React.lazy(() => import('@/pages/training/TrainingPage'));
-const SettingsPage = React.lazy(() => import('@/pages/settings/SettingsPage'));
-const ProfilePage = React.lazy(() => import('@/pages/profile/ProfilePage'));
+// const TrainingPage = React.lazy(() => import('@/pages/training/TrainingPage'));
+// const SettingsPage = React.lazy(() => import('@/pages/settings/SettingsPage'));
+// const ProfilePage = React.lazy(() => import('@/pages/profile/ProfilePage'));
 const NotFoundPage = React.lazy(() => import('@/pages/NotFoundPage'));
 
 // Protected Route Component
@@ -144,13 +144,14 @@ const App: React.FC = () => {
             </ProtectedRoute>
           } />
           
-          <Route path="/customers/:customerId" element={
+          {/* Customer Details - not implemented yet */}
+          {/* <Route path="/customers/:customerId" element={
             <ProtectedRoute>
               <Layout>
                 <CustomerDetailsPage />
               </Layout>
             </ProtectedRoute>
-          } />
+          } /> */}
 
           {/* Properties Routes */}
           <Route path="/properties" element={
@@ -161,39 +162,43 @@ const App: React.FC = () => {
             </ProtectedRoute>
           } />
           
-          <Route path="/properties/:propertyId" element={
+          {/* Property Details - not implemented yet */}
+          {/* <Route path="/properties/:propertyId" element={
             <ProtectedRoute>
               <Layout>
                 <PropertyDetailsPage />
               </Layout>
             </ProtectedRoute>
-          } />
+          } /> */}
 
           {/* Projects Routes */}
-          <Route path="/projects" element={
+          {/* Projects - not implemented yet */}
+          {/* <Route path="/projects" element={
             <ProtectedRoute>
               <Layout>
                 <ProjectsPage />
               </Layout>
             </ProtectedRoute>
-          } />
+          } /> */}
           
-          <Route path="/projects/:projectId" element={
+          {/* Project details - not implemented yet */}
+          {/* <Route path="/projects/:projectId" element={
             <ProtectedRoute>
               <Layout>
                 <ProjectDetailsPage />
               </Layout>
             </ProtectedRoute>
-          } />
+          } /> */}
 
           {/* Interactions Route */}
-          <Route path="/interactions" element={
+          {/* Interactions - not implemented yet */}
+          {/* <Route path="/interactions" element={
             <ProtectedRoute>
               <Layout>
                 <InteractionsPage />
               </Layout>
             </ProtectedRoute>
-          } />
+          } /> */}
 
           {/* Analytics & Reports Routes */}
           <Route path="/analytics" element={
@@ -204,13 +209,14 @@ const App: React.FC = () => {
             </ProtectedRoute>
           } />
           
-          <Route path="/reports" element={
+          {/* Reports - not implemented yet */}
+          {/* <Route path="/reports" element={
             <ProtectedRoute>
               <Layout>
                 <ReportsPage />
               </Layout>
             </ProtectedRoute>
-          } />
+          } /> */}
 
           {/* Marketing Route */}
           <Route path="/marketing" element={
@@ -230,17 +236,17 @@ const App: React.FC = () => {
             </ProtectedRoute>
           } />
 
-          {/* Training Route */}
-          <Route path="/training" element={
+          {/* Training Route - not implemented yet */}
+          {/* <Route path="/training" element={
             <ProtectedRoute>
               <Layout>
                 <TrainingPage />
               </Layout>
             </ProtectedRoute>
-          } />
+          } /> */}
 
-          {/* Settings & Profile Routes */}
-          <Route path="/settings" element={
+          {/* Settings & Profile Routes - not implemented yet */}
+          {/* <Route path="/settings" element={
             <ProtectedRoute>
               <Layout>
                 <SettingsPage />
@@ -254,7 +260,7 @@ const App: React.FC = () => {
                 <ProfilePage />
               </Layout>
             </ProtectedRoute>
-          } />
+          } /> */}
 
           {/* Root redirect */}
           <Route path="/" element={

@@ -50,7 +50,7 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
   
   const recognitionRef = useRef<any>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const intervalRef = useRef<NodeJS.Interval | null>(null);
+  const intervalRef = useRef<number | null>(null);
 
   // Check for speech recognition support
   useEffect(() => {
