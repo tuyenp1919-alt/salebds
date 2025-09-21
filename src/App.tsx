@@ -17,7 +17,7 @@ const ForgotPasswordPage = React.lazy(() => import('@/pages/auth/ForgotPasswordP
 const DashboardPage = React.lazy(() => import('@/pages/dashboard/DashboardPage'));
 const CustomersPage = React.lazy(() => import('@/pages/Customers'));
 const CustomerDetailsPage = React.lazy(() => import('@/pages/customers/CustomerDetailsPage'));
-const PropertiesPage = React.lazy(() => import('@/pages/Properties'));
+const PropertiesPage = React.lazy(() => import('@/pages/properties'));
 const PropertyDetailsPage = React.lazy(() => import('@/pages/properties/PropertyDetailsPage'));
 const ProjectsPage = React.lazy(() => import('@/pages/ProjectsPage'));
 // const ProjectDetailsPage = React.lazy(() => import('@/pages/projects/ProjectDetailsPage'));
@@ -29,6 +29,7 @@ const FengShuiPage = React.lazy(() => import('@/pages/FengShuiPage'));
 const TrainingPage = React.lazy(() => import('@/pages/TrainingPage'));
 const SettingsPage = React.lazy(() => import('@/pages/settings/SettingsPage'));
 const ProfilePage = React.lazy(() => import('@/pages/ProfilePage'));
+const DiagnosticPage = React.lazy(() => import('@/pages/DiagnosticPage'));
 const NotFoundPage = React.lazy(() => import('@/pages/NotFoundPage'));
 
 // Protected Route Component
@@ -260,6 +261,9 @@ const App: React.FC = () => {
               </Layout>
             </ProtectedRoute>
           } />
+
+          {/* Diagnostic Page - Special route for debugging */}
+          <Route path="/diagnostic" element={<DiagnosticPage />} />
 
           {/* Root redirect */}
           <Route path="/" element={

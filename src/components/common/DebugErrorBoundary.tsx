@@ -1,4 +1,5 @@
 import React from 'react';
+import ProductionFallback from './ProductionFallback';
 
 interface Props {
   children: React.ReactNode;
@@ -60,6 +61,16 @@ class DebugErrorBoundary extends React.Component<Props, State> {
   render() {
     if (this.state.hasError) {
       const { error, errorInfo } = this.state;
+      
+      // In production, show a cleaner error page
+      if (process.env.NODE_ENV === 'production') {
+        try {
+          return <ProductionFallback error={error} />;
+        } catch (fallbackError) {
+          console.error('ProductionFallback failed:', fallbackError);
+          // Fall through to debug UI if production fallback fails
+        }
+      }
       
       return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">

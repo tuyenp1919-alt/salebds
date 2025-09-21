@@ -79,8 +79,18 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 )
 
+// Remove StrictMode in production to avoid double rendering issues
+const isProduction = process.env.NODE_ENV === 'production';
+
+const AppWrapper = ({ children }: { children: React.ReactNode }) => {
+  if (isProduction) {
+    return <>{children}</>;
+  }
+  return <React.StrictMode>{children}</React.StrictMode>;
+};
+
 root.render(
-  <React.StrictMode>
+  <AppWrapper>
     <DebugErrorBoundary>
       <SimpleErrorBoundary onError={handleError}>
       <QueryClientProvider client={queryClient}>
@@ -126,7 +136,7 @@ root.render(
       </QueryClientProvider>
       </SimpleErrorBoundary>
     </DebugErrorBoundary>
-  </React.StrictMode>
+  </AppWrapper>
 )
 
 // Register service worker in production
