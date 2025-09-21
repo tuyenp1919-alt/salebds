@@ -3,10 +3,15 @@ import { errorRecoverySystem } from '../core/ErrorRecoverySystem';
 import { authSystem } from '../core/AuthenticationSystem';
 import { stateManager } from '../core/StateManagementSystem';
 import { apiLayer } from '../core/APILayer';
+import { routingSystem } from '../core/AdvancedRoutingSystem';
+import { useRouter, useBreadcrumbs, useRouteAnalytics } from '../hooks/useRouting';
 
 export const DemoPage: React.FC = () => {
   const [systemStatus, setSystemStatus] = useState<any>({});
   const [testResults, setTestResults] = useState<string[]>([]);
+  const { currentRoute, isNavigating, navigate } = useRouter();
+  const breadcrumbs = useBreadcrumbs();
+  const routeAnalytics = useRouteAnalytics();
 
   const addTestResult = (message: string) => {
     setTestResults(prev => [...prev, `${new Date().toLocaleTimeString()}: ${message}`]);
@@ -140,6 +145,61 @@ export const DemoPage: React.FC = () => {
       addTestResult(`❌ State management test failed: ${error}`);
     }
   };
+  
+  const testRoutingSystem = async () => {
+    try {
+      addTestResult('🧭 Testing routing system...');
+      
+      // Test route configuration
+      const dashboardRoute = {
+        path: '/dashboard',
+        name: 'dashboard',
+        meta: {
+          title: 'Dashboard',
+          requiresAuth: true,
+          preload: true,
+          priority: 1
+        }
+      };
+      
+      const customersRoute = {
+        path: '/customers',
+        name: 'customers',
+        meta: {
+          title: 'Customers',
+          requiresAuth: true
+        }
+      };
+      
+      routingSystem.addRoute(dashboardRoute);
+      routingSystem.addRoute(customersRoute);
+      
+      addTestResult(`✅ Routes configured: 2 routes added`);
+      
+      // Test navigation
+      const result = await routingSystem.navigate('/dashboard');
+      addTestResult(`✅ Navigation ${result ? 'succeeded' : 'failed'}: /dashboard`);
+      
+      // Test route resolution
+      const route = await routingSystem.resolve('/dashboard');
+      if (route) {
+        addTestResult(`✅ Route resolved: ${route.name} (${route.path})`);
+      } else {
+        addTestResult(`❌ Route resolution failed`);
+      }
+      
+      // Test breadcrumbs
+      const crumbs = breadcrumbs.length;
+      addTestResult(`✅ Breadcrumbs generated: ${crumbs} items`);
+      
+      // Test analytics
+      addTestResult(`✅ Route analytics: ${routeAnalytics?.totalNavigations || 0} navigations recorded`);
+      
+      addTestResult('✅ Routing system tests completed!');
+    } catch (error) {
+      addTestResult(`❌ Routing system test failed: ${error}`);
+    }
+  };
 
   useEffect(() => {
     const updateStatus = () => {
@@ -159,6 +219,12 @@ export const DemoPage: React.FC = () => {
         state: {
           modules: Object.keys(stateManager.getState()).length,
           initialized: true
+        },
+        routing: {
+          currentRoute: currentRoute?.name || 'none',
+          isNavigating: isNavigating,
+          totalRoutes: routingSystem.exportState().routes,
+          analytics: routeAnalytics
         }
       });
     };
@@ -181,7 +247,7 @@ export const DemoPage: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
           {/* System Status Cards */}
           <div className="bg-white rounded-lg shadow-lg p-6">
             <h3 className="text-lg font-semibold mb-4 text-red-600">🛡️ Error Recovery</h3>
@@ -230,12 +296,24 @@ export const DemoPage: React.FC = () => {
               <p className="text-sm">Requests: {systemStatus.api?.metrics?.totalRequests || 0}</p>
             </div>
           </div>
+
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h3 className="text-lg font-semibold mb-4 text-indigo-600">🧭 Routing System</h3>
+            <div className="space-y-2">
+              <p className="text-sm">
+                Status: <span className={isNavigating ? 'text-yellow-600' : 'text-green-600'}>
+                  {isNavigating ? 'Navigating' : 'Ready'}
+                </span>
+              </p>
+              <p className="text-sm">Routes: {systemStatus.routing?.totalRoutes || 0}</p>
+            </div>
+          </div>
         </div>
 
         {/* Test Controls */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <h2 className="text-2xl font-bold mb-6">🧪 System Tests</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             <button
               onClick={runSystemTests}
               className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
@@ -259,6 +337,12 @@ export const DemoPage: React.FC = () => {
               className="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
             >
               📊 Test State
+            </button>
+            <button
+              onClick={testRoutingSystem}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+            >
+              🧭 Test Routing
             </button>
           </div>
         </div>

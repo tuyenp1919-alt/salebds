@@ -66,6 +66,24 @@ export type {
   APIMetrics
 } from './APILayer';
 
+// Advanced Routing System
+export { routingSystem } from './AdvancedRoutingSystem';
+export type {
+  RouteConfig,
+  RouteMeta,
+  RouteProps,
+  RouteGuard,
+  RouteMatch,
+  NavigationState,
+  NavigationError,
+  NavigationHook,
+  PreloadStrategy,
+  PreloadContext,
+  BreadcrumbItem,
+  RouteTransition,
+  NavigationOptions
+} from './AdvancedRoutingSystem';
+
 // System initialization function
 export const initializeCoreSystem = async () => {
   console.log('🚀 Initializing SaleBDS Core Systems...');
@@ -88,6 +106,9 @@ export const initializeCoreSystem = async () => {
       enableMetrics: true
     });
     console.log('🌐 API Layer: Configured');
+    
+    // Initialize routing system
+    console.log('🧭 Advanced Routing System: Ready');
     
     console.log('✅ All core systems initialized successfully');
     return true;
@@ -114,6 +135,7 @@ export const checkSystemHealth = () => {
     auth: authSystem.isAuthenticated() !== undefined, // System is responsive
     state: Object.keys(stateManager.getState()).length > 0,
     api: apiLayer.exportState().timestamp > 0,
+    routing: routingSystem.exportState().timestamp > 0,
     overall: true
   };
   
@@ -133,6 +155,7 @@ export const exportSystemState = () => {
     },
     state: stateManager.exportState(),
     api: apiLayer.exportState(),
+    routing: routingSystem.exportState(),
     health: checkSystemHealth()
   };
 };

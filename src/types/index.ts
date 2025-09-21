@@ -307,6 +307,41 @@ export interface Promotion {
   conditions?: string;
 }
 
+// ============ SALES PIPELINE & DEAL MANAGEMENT TYPES ============
+export type DealStage = 'prospect' | 'qualified' | 'proposal' | 'negotiation' | 'closing' | 'won' | 'lost';
+export type DealStatus = 'active' | 'won' | 'lost' | 'paused';
+
+export interface Deal {
+  id: string;
+  title: string;
+  value: number;
+  stage: DealStage;
+  status: DealStatus;
+  probability: number;
+  expectedCloseDate?: string;
+  createdAt: string;
+  updatedAt: string;
+  assignedTo: string;
+  customer?: Customer;
+  property?: Property;
+  notes?: string;
+  activities?: DealActivity[];
+  commission?: {
+    rate: number;
+    amount: number;
+  };
+}
+
+export interface DealActivity {
+  id: string;
+  type: 'note' | 'call' | 'email' | 'meeting' | 'stage_change' | 'update';
+  title: string;
+  description: string;
+  createdAt: string;
+  createdBy: string;
+  metadata?: Record<string, any>;
+}
+
 // ============ INTERACTION & ACTIVITY TYPES ============
 export interface Interaction {
   id: string;
