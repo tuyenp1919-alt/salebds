@@ -79,7 +79,7 @@ root.render(
       onReset={() => window.location.reload()}
     > */}
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
+        <BrowserRouter basename="/salebds">
           <ThemeProvider>
             <AuthProvider>
               <NotificationProvider>
@@ -127,7 +127,7 @@ root.render(
 if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
   window.addEventListener('load', async () => {
     try {
-      const registration = await navigator.serviceWorker.register('/sw.js')
+      const registration = await navigator.serviceWorker.register('/salebds/sw.js')
       console.log('SW registered:', registration)
       
       // Handle updates
