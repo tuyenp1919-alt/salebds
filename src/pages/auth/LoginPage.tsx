@@ -145,8 +145,8 @@ const LoginPage: React.FC = () => {
       <div className="mt-6 p-4 bg-gray-50 rounded-md">
         <h4 className="text-sm font-medium text-gray-900 mb-2">Thông tin demo:</h4>
         <div className="text-sm text-gray-600 space-y-1">
-          <p><strong>Email:</strong> admin@salebds.com</p>
-          <p><strong>Mật khẩu:</strong> 123456</p>
+          <p><strong>Email:</strong> demo@salebds.com</p>
+          <p><strong>Mật khẩu:</strong> demo123</p>
         </div>
       </div>
     </div>
