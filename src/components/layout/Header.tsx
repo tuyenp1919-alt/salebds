@@ -38,7 +38,7 @@ const Header: React.FC<HeaderProps> = ({
   const [quickActionsOpen, setQuickActionsOpen] = useState(false);
 
   const { user, logout } = useAuth();
-  const { theme, actualTheme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   const userMenuRef = useRef<HTMLDivElement>(null);
   const themeMenuRef = useRef<HTMLDivElement>(null);
@@ -51,7 +51,6 @@ const Header: React.FC<HeaderProps> = ({
   const themeOptions = [
     { key: 'light', label: 'Sáng', icon: Sun },
     { key: 'dark', label: 'Tối', icon: Moon },
-    { key: 'auto', label: 'Tự động', icon: Monitor },
   ];
 
   const quickActions = [
@@ -166,7 +165,7 @@ const Header: React.FC<HeaderProps> = ({
                     <button
                       key={option.key}
                       onClick={() => {
-                        setTheme(option.key as any);
+                        setTheme(option.key as 'light' | 'dark');
                         setThemeMenuOpen(false);
                       }}
                       className={`w-full flex items-center px-4 py-2 text-sm transition-colors ${

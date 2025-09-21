@@ -17,11 +17,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [notificationPanelOpen, setNotificationPanelOpen] = useState(false);
   const { user } = useAuth();
-  const { actualTheme } = useTheme();
+  const { theme } = useTheme();
   const { unreadCount } = useNotifications();
 
   return (
-    <div className={`min-h-screen bg-gray-50 ${actualTheme === 'dark' ? 'dark' : ''}`}>
+    <div className={`min-h-screen bg-gray-50 ${theme === 'dark' ? 'dark' : ''}`}>
       {/* Desktop Sidebar */}
       <div className="hidden lg:block">
         <Sidebar 
