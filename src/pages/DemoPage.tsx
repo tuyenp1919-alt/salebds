@@ -6,7 +6,7 @@ import { apiLayer } from '../core/APILayer';
 import { routingSystem } from '../core/AdvancedRoutingSystem';
 import { useRouter, useBreadcrumbs, useRouteAnalytics } from '../hooks/useRouting';
 
-export const DemoPage: React.FC = () => {
+const DemoPage: React.FC = () => {
   const [systemStatus, setSystemStatus] = useState<any>({});
   const [testResults, setTestResults] = useState<string[]>([]);
   const { currentRoute, isNavigating, navigate } = useRouter();
@@ -399,3 +399,5 @@ export const DemoPage: React.FC = () => {
     </div>
   );
 };
+
+export default DemoPage;

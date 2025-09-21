@@ -6,12 +6,7 @@ import path from 'path'
 export default defineConfig({
   base: process.env.NODE_ENV === 'production' ? '/salebds/' : '/',
   plugins: [
-    react({
-      // Disable type checking in build for faster builds
-      typescript: {
-        check: false
-      }
-    }),
+    react(),
     VitePWA({
       registerType: 'autoUpdate',
       workbox: {
