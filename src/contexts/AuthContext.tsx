@@ -188,15 +188,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const { user, token, refreshToken } = response;
       
       // Store in localStorage if remember is true, otherwise sessionStorage
-      if (remember) {
-        localStorage.setItem('auth_token', token);
-        localStorage.setItem('auth_user', JSON.stringify(user));
-        if (refreshToken) {
-          localStorage.setItem('refresh_token', refreshToken);
+      try {
+        if (remember && typeof localStorage !== 'undefined') {
+          localStorage.setItem('auth_token', token);
+          localStorage.setItem('auth_user', JSON.stringify(user));
+          if (refreshToken) {
+            localStorage.setItem('refresh_token', refreshToken);
+          }
+        } else if (typeof sessionStorage !== 'undefined') {
+          sessionStorage.setItem('auth_token', token);
+          sessionStorage.setItem('auth_user', JSON.stringify(user));
         }
-      } else {
-        sessionStorage.setItem('auth_token', token);
-        sessionStorage.setItem('auth_user', JSON.stringify(user));
+      } catch (error) {
+        console.warn('Failed to store auth data:', error);
+        // Continue without storage - user will need to login again
       }
       
       setAuthState({
@@ -220,8 +225,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       const { user, token } = response;
       
-      localStorage.setItem('auth_token', token);
-      localStorage.setItem('auth_user', JSON.stringify(user));
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('auth_token', token);
+          localStorage.setItem('auth_user', JSON.stringify(user));
+        }
+      } catch (error) {
+        console.warn('Failed to store registration data:', error);
+      }
       
       setAuthState({
         user,
@@ -236,12 +247,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const logout = () => {
-    // Clear all auth data
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('auth_user');
-    localStorage.removeItem('refresh_token');
-    sessionStorage.removeItem('auth_token');
-    sessionStorage.removeItem('auth_user');
+    // Clear all auth data safely
+    try {
+      if (typeof localStorage !== 'undefined') {
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('auth_user');
+        localStorage.removeItem('refresh_token');
+      }
+      if (typeof sessionStorage !== 'undefined') {
+        sessionStorage.removeItem('auth_token');
+        sessionStorage.removeItem('auth_user');
+      }
+    } catch (error) {
+      console.warn('Failed to clear auth data:', error);
+    }
     
     setAuthState({
       user: null,
@@ -261,7 +280,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // In a real app, this would be an API call
       const updatedUser = { ...authState.user, ...data };
       
-      localStorage.setItem('auth_user', JSON.stringify(updatedUser));
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('auth_user', JSON.stringify(updatedUser));
+        }
+      } catch (error) {
+        console.warn('Failed to update user profile:', error);
+      }
       
       setAuthState(prev => ({
         ...prev,
@@ -274,7 +299,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const refreshToken = async () => {
     try {
-      const refreshTokenValue = localStorage.getItem('refresh_token');
+      let refreshTokenValue: string | null = null;
+      try {
+        if (typeof localStorage !== 'undefined') {
+          refreshTokenValue = localStorage.getItem('refresh_token');
+        }
+      } catch (error) {
+        console.warn('Failed to get refresh token:', error);
+      }
       if (!refreshTokenValue) {
         throw new Error('No refresh token available');
       }
@@ -284,8 +316,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       const { token, user } = response;
       
-      localStorage.setItem('auth_token', token);
-      localStorage.setItem('auth_user', JSON.stringify(user));
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('auth_token', token);
+          localStorage.setItem('auth_user', JSON.stringify(user));
+        }
+      } catch (error) {
+        console.warn('Failed to store refreshed auth data:', error);
+      }
       
       setAuthState(prev => ({
         ...prev,

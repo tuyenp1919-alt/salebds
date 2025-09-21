@@ -8,6 +8,7 @@ import { Toaster } from 'react-hot-toast'
 
 import App from './App'
 import SimpleErrorBoundary from './components/common/SimpleErrorBoundary'
+import DebugErrorBoundary from './components/common/DebugErrorBoundary'
 import { AuthProvider } from './contexts/AuthContext'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { NotificationProvider } from './contexts/NotificationContext'
@@ -80,7 +81,8 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <SimpleErrorBoundary onError={handleError}>
+    <DebugErrorBoundary>
+      <SimpleErrorBoundary onError={handleError}>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter basename="/salebds">
           <ThemeProvider>
@@ -122,7 +124,8 @@ root.render(
           <ReactQueryDevtools initialIsOpen={false} />
         )} */}
       </QueryClientProvider>
-    </SimpleErrorBoundary>
+      </SimpleErrorBoundary>
+    </DebugErrorBoundary>
   </React.StrictMode>
 )
 
@@ -201,4 +204,40 @@ document.addEventListener('visibilitychange', () => {
     // App came back to foreground - resume operations
     queryClient.invalidateQueries() // Refresh data when app becomes active
   }
+})
+
+// Global error handlers for unhandled errors
+window.addEventListener('error', (event) => {
+  console.error('Global Error:', {
+    message: event.error?.message || event.message,
+    filename: event.filename,
+    lineno: event.lineno,
+    colno: event.colno,
+    stack: event.error?.stack,
+    timestamp: new Date().toISOString(),
+    userAgent: navigator.userAgent,
+    url: window.location.href
+  })
+  
+  // If error is related to localStorage, try to clear it
+  if (event.error?.message?.includes('localStorage') || event.error?.message?.includes('storage')) {
+    console.warn('Storage error detected, attempting to clear localStorage...');
+    try {
+      localStorage.clear();
+    } catch (e) {
+      console.error('Failed to clear localStorage:', e);
+    }
+  }
+})
+
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('Unhandled Promise Rejection:', {
+    reason: event.reason,
+    timestamp: new Date().toISOString(),
+    userAgent: navigator.userAgent,
+    url: window.location.href
+  })
+  
+  // Prevent default behavior (showing error in console)
+  event.preventDefault()
 })
