@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline - SaleBDS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .offline-container {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .offline-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: #f3f4f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .offline-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .offline-message {
+            color: #6b7280;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .retry-button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-bottom: 16px;
+        }
+
+        .retry-button:hover {
+            background: #1d4ed8;
+        }
+
+        .retry-button:active {
+            transform: scale(0.98);
+        }
+
+        .offline-features {
+            text-align: left;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .feature-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .feature-item::before {
+            content: '✓';
+            color: #10b981;
+            font-weight: bold;
+            margin-right: 8px;
+            width: 16px;
+        }
+
+        .connection-status {
+            margin-top: 24px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .connection-offline {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .connection-online {
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 50%;
+            border-top-color: #2563eb;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .brand {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #e5e7eb;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        .brand-logo {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: #2563eb;
+            border-radius: 6px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 480px) {
+            .offline-container {
+                padding: 24px;
+            }
+            
+            .offline-title {
+                font-size: 20px;
+            }
+            
+            .offline-icon {
+                width: 64px;
+                height: 64px;
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">📡</div>
+        
+        <h1 class="offline-title">Bạn đang offline</h1>
+        
+        <p class="offline-message">
+            Không thể kết nối internet. Vui lòng kiểm tra kết nối mạng và thử lại.
+        </p>
+        
+        <button class="retry-button" onclick="retryConnection()">
+            <span class="retry-text">Thử lại</span>
+        </button>
+        
+        <div class="connection-status connection-offline" id="connectionStatus">
+            🔴 Không có kết nối internet
+        </div>
+        
+        <div class="offline-features">
+            <div class="feature-title">Tính năng khả dụng offline:</div>
+            <ul class="feature-list">
+                <li class="feature-item">Xem dữ liệu đã lưu trữ</li>
+                <li class="feature-item">Tìm kiếm trong cache</li>
+                <li class="feature-item">Đọc báo cáo đã tải</li>
+                <li class="feature-item">Xem thông tin phong thủy</li>
+            </ul>
+        </div>
+        
+        <div class="brand">
+            <span class="brand-logo"></span>
+            SaleBDS - CRM & AI Assistant
+        </div>
+    </div>
+
+    <script>
+        let isRetrying = false;
+
+        // Check connection status
+        function updateConnectionStatus() {
+            const statusEl = document.getElementById('connectionStatus');
+            const retryButton = document.querySelector('.retry-button');
+            
+            if (navigator.onLine) {
+                statusEl.className = 'connection-status connection-online';
+                statusEl.innerHTML = '🟢 Đã kết nối internet';
+                retryButton.style.display = 'inline-block';
+            } else {
+                statusEl.className = 'connection-status connection-offline';
+                statusEl.innerHTML = '🔴 Không có kết nối internet';
+            }
+        }
+
+        // Retry connection
+        function retryConnection() {
+            if (isRetrying) return;
+            
+            isRetrying = true;
+            const retryButton = document.querySelector('.retry-button');
+            const retryText = document.querySelector('.retry-text');
+            
+            retryText.innerHTML = '<span class="loading"></span>Đang thử...';
+            retryButton.disabled = true;
+            
+            // Check if we can reach the main app
+            fetch('/', { 
+                method: 'HEAD',
+                mode: 'no-cors',
+                cache: 'no-cache'
+            })
+            .then(() => {
+                // Connection restored, reload the app
+                window.location.href = '/';
+            })
+            .catch(() => {
+                // Still offline
+                setTimeout(() => {
+                    retryText.textContent = 'Thử lại';
+                    retryButton.disabled = false;
+                    isRetrying = false;
+                }, 2000);
+            });
+        }
+
+        // Listen for online/offline events
+        window.addEventListener('online', () => {
+            updateConnectionStatus();
+            // Auto-retry when connection is restored
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1000);
+        });
+
+        window.addEventListener('offline', updateConnectionStatus);
+
+        // Initial status check
+        updateConnectionStatus();
+
+        // Auto-retry every 30 seconds
+        setInterval(() => {
+            if (navigator.onLine && !isRetrying) {
+                retryConnection();
+            }
+        }, 30000);
+
+        // Handle keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'r' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                retryConnection();
+            }
+        });
+
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add hover effects
+            const retryButton = document.querySelector('.retry-button');
+            retryButton.addEventListener('mousedown', () => {
+                retryButton.style.transform = 'scale(0.98)';
+            });
+            retryButton.addEventListener('mouseup', () => {
+                retryButton.style.transform = 'scale(1)';
+            });
+            retryButton.addEventListener('mouseleave', () => {
+                retryButton.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
