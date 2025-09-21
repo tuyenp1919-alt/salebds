@@ -15,7 +15,7 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   # Build job
@@ -77,7 +77,7 @@ jobs:
         uses: treosh/lighthouse-ci-action@v10
         with:
           urls: |
-            https://tuyenpham.github.io/salebds/
+            https://tuyenp1919-alt.github.io/salebds/
           configPath: './lighthouse.config.js'
           uploadArtifacts: true
           temporaryPublicStorage: true
