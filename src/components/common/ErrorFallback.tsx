@@ -60,7 +60,7 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({ error, resetErrorBoundary
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
             onClick={resetErrorBoundary}
-            className="btn btn-primary flex items-center justify-center gap-2"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
           >
             <RefreshCw className="w-4 h-4" />
             Thử lại
@@ -68,7 +68,7 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({ error, resetErrorBoundary
 
           <button
             onClick={handleGoHome}
-            className="btn btn-secondary flex items-center justify-center gap-2"
+            className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center justify-center gap-2"
           >
             <Home className="w-4 h-4" />
             Về trang chủ
@@ -76,7 +76,7 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({ error, resetErrorBoundary
 
           <button
             onClick={handleReload}
-            className="btn btn-ghost flex items-center justify-center gap-2"
+            className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
           >
             <RefreshCw className="w-4 h-4" />
             Tải lại trang
@@ -89,7 +89,7 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({ error, resetErrorBoundary
             Nếu lỗi vẫn tiếp tục, vui lòng liên hệ với{' '}
             <a 
               href="mailto:support@salebds.com" 
-              className="text-primary-600 hover:text-primary-700 underline"
+              className="text-blue-600 hover:text-blue-700 underline"
             >
               đội hỗ trợ
             </a>{' '}

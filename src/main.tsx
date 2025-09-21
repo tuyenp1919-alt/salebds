@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'react-hot-toast'
 
 import App from './App'
-// import ErrorFallback from './components/common/ErrorFallback'
+import SimpleErrorBoundary from './components/common/SimpleErrorBoundary'
 import { AuthProvider } from './contexts/AuthContext'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { NotificationProvider } from './contexts/NotificationContext'
@@ -73,11 +73,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    {/* <ErrorBoundary
-      FallbackComponent={ErrorFallback}
-      onError={handleError}
-      onReset={() => window.location.reload()}
-    > */}
+    <SimpleErrorBoundary onError={handleError}>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter basename="/salebds">
           <ThemeProvider>
@@ -119,7 +115,7 @@ root.render(
           <ReactQueryDevtools initialIsOpen={false} />
         )} */}
       </QueryClientProvider>
-    {/* </ErrorBoundary> */}
+    </SimpleErrorBoundary>
   </React.StrictMode>
 )
 
