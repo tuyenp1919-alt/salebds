@@ -1,10 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-type Theme = 'light' | 'dark' | 'auto';
+type Theme = 'light' | 'dark';
 
 interface ThemeContextType {
   theme: Theme;
-  actualTheme: 'light' | 'dark';
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
 }
@@ -25,41 +24,27 @@ interface ThemeProviderProps {
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [theme, setThemeState] = useState<Theme>(() => {
-    const savedTheme = localStorage.getItem('theme') as Theme;
-    return savedTheme || 'light';
-  });
-
-  const [actualTheme, setActualTheme] = useState<'light' | 'dark'>('light');
-
-  // Calculate actual theme based on user preference and system preference
-  useEffect(() => {
-    const calculateActualTheme = () => {
-      if (theme === 'auto') {
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        return systemPrefersDark ? 'dark' : 'light';
+    // Check if we have a saved theme in localStorage
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark' || savedTheme === 'light') {
+          return savedTheme as Theme;
+        }
       }
-      return theme;
-    };
-
-    setActualTheme(calculateActualTheme());
-
-    // Listen for system theme changes when theme is set to 'auto'
-    if (theme === 'auto') {
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      const handleChange = () => {
-        setActualTheme(mediaQuery.matches ? 'dark' : 'light');
-      };
-
-      mediaQuery.addEventListener('change', handleChange);
-      return () => mediaQuery.removeEventListener('change', handleChange);
+    } catch (error) {
+      console.warn('Could not access localStorage:', error);
     }
-  }, [theme]);
+    return 'light';
+  });
 
   // Apply theme to document
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const root = document.documentElement;
     
-    if (actualTheme === 'dark') {
+    if (theme === 'dark') {
       root.classList.add('dark');
     } else {
       root.classList.remove('dark');
@@ -68,30 +53,29 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     // Update meta theme-color for PWA
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (metaThemeColor) {
-      metaThemeColor.setAttribute('content', actualTheme === 'dark' ? '#1f2937' : '#1e40af');
+      metaThemeColor.setAttribute('content', theme === 'dark' ? '#1f2937' : '#1e40af');
     }
-  }, [actualTheme]);
+  }, [theme]);
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
-    localStorage.setItem('theme', newTheme);
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.setItem('theme', newTheme);
+      }
+    } catch (error) {
+      console.warn('Could not save theme to localStorage:', error);
+    }
   };
 
   const toggleTheme = () => {
-    if (theme === 'light') {
-      setTheme('dark');
-    } else if (theme === 'dark') {
-      setTheme('auto');
-    } else {
-      setTheme('light');
-    }
+    setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
   return (
     <ThemeContext.Provider
       value={{
         theme,
-        actualTheme,
         setTheme,
         toggleTheme,
       }}

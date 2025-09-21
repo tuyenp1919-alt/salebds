@@ -42,6 +42,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     const initAuth = async () => {
       try {
+        // Check if localStorage is available
+        if (typeof window === 'undefined' || !window.localStorage) {
+          setAuthState(prev => ({ ...prev, loading: false }));
+          return;
+        }
+
         const token = localStorage.getItem('auth_token');
         const userData = localStorage.getItem('auth_user');
         
@@ -60,8 +66,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             });
           } else {
             // Token expired, clear storage
-            localStorage.removeItem('auth_token');
-            localStorage.removeItem('auth_user');
+            try {
+              localStorage.removeItem('auth_token');
+              localStorage.removeItem('auth_user');
+            } catch (e) {
+              console.warn('Could not clear auth data:', e);
+            }
             setAuthState(prev => ({ ...prev, loading: false }));
           }
         } else {
