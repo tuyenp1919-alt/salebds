@@ -197,6 +197,11 @@ export const customerService = {
     return MOCK_CUSTOMERS.find(customer => customer.id === id) || null;
   },
 
+  // Lấy thông tin một khách hàng by ID (alias)
+  async getCustomerById(id: string): Promise<Customer | null> {
+    return this.getCustomer(id);
+  },
+
   // Tạo khách hàng mới
   async createCustomer(data: Omit<Customer, 'id' | 'createdAt' | 'updatedAt'>): Promise<Customer> {
     await delay(800);

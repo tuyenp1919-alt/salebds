@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Settings, User, Bell, Shield, Palette, Globe, 
-  Database, CreditCard, Users, Building, Save
+  Database, CreditCard, Users, Building, Save, Moon, Sun
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useTheme } from '@/contexts/ThemeContext';
 
 const SettingsPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('general');
+  const { theme, toggleTheme } = useTheme();
 
   const tabs = [
     { id: 'general', label: 'Cài đặt chung', icon: Settings },
@@ -222,18 +224,33 @@ const SettingsPage: React.FC = () => {
                 <h2 className="text-xl font-semibold mb-6">Giao diện</h2>
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-4">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
                       Chế độ màu
                     </label>
-                    <div className="grid grid-cols-3 gap-4">
-                      {['Sáng', 'Tối', 'Tự động'].map((mode) => (
-                        <button
-                          key={mode}
-                          className="px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50"
-                        >
-                          {mode}
-                        </button>
-                      ))}
+                    <div className="flex items-center justify-between p-4 border border-gray-300 dark:border-gray-600 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        {theme === 'dark' ? (
+                          <Moon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                        ) : (
+                          <Sun className="w-5 h-5 text-yellow-500" />
+                        )}
+                        <div>
+                          <p className="font-medium text-gray-900 dark:text-white">
+                            {theme === 'dark' ? 'Chế độ tối' : 'Chế độ sáng'}
+                          </p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                            {theme === 'dark' ? 'Giảm ánh sáng cho mắt' : 'Giao diện sáng rõ ràng'}
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={toggleTheme}
+                        className="relative inline-flex items-center h-6 rounded-full w-11 bg-gray-200 dark:bg-gray-700 transition-colors"
+                      >
+                        <span className={`inline-block w-4 h-4 transform transition-transform bg-white dark:bg-gray-300 rounded-full ${
+                          theme === 'dark' ? 'translate-x-6' : 'translate-x-1'
+                        }`} />
+                      </button>
                     </div>
                   </div>
 

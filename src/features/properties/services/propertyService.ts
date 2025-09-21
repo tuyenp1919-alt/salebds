@@ -409,6 +409,10 @@ export const propertyService = {
     return MOCK_PROPERTIES.find(p => p.id === id) || null;
   },
 
+  async getPropertyById(id: string): Promise<Property | null> {
+    return this.getProperty(id);
+  },
+
   async createProperty(data: Omit<Property, 'id' | 'createdAt' | 'updatedAt' | 'views' | 'favorites' | 'inquiries'>): Promise<Property> {
     await delay(800);
 
