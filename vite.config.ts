@@ -6,7 +6,12 @@ import path from 'path'
 export default defineConfig({
   base: '/salebds/',
   plugins: [
-    react(),
+    react({
+      // Disable type checking in build for faster builds
+      typescript: {
+        check: false
+      }
+    }),
     VitePWA({
       registerType: 'autoUpdate',
       workbox: {

@@ -15,7 +15,6 @@ import {
   Calendar,
   Star,
   Trash2,
-  MarkAsRead,
 } from 'lucide-react';
 
 interface NotificationPanelProps {
