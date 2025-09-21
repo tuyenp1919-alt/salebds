@@ -30,6 +30,7 @@ const TrainingPage = React.lazy(() => import('@/pages/TrainingPage'));
 const SettingsPage = React.lazy(() => import('@/pages/settings/SettingsPage'));
 const ProfilePage = React.lazy(() => import('@/pages/ProfilePage'));
 const DiagnosticPage = React.lazy(() => import('@/pages/DiagnosticPage'));
+const DemoPage = React.lazy(() => import('@/pages/DemoPage'));
 const NotFoundPage = React.lazy(() => import('@/pages/NotFoundPage'));
 
 // Protected Route Component
@@ -261,6 +262,9 @@ const App: React.FC = () => {
               </Layout>
             </ProtectedRoute>
           } />
+
+          {/* Demo Page - System testing */}
+          <Route path="/demo" element={<DemoPage />} />
 
           {/* Diagnostic Page - Special route for debugging */}
           <Route path="/diagnostic" element={<DiagnosticPage />} />

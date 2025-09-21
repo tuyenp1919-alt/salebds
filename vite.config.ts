@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
 
 export default defineConfig({
-  base: '/salebds/',
+  base: process.env.NODE_ENV === 'production' ? '/salebds/' : '/',
   plugins: [
     react({
       // Disable type checking in build for faster builds
@@ -63,7 +63,8 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    host: true
+    host: 'localhost',
+    open: true
   },
   build: {
     outDir: 'dist',
