@@ -16,9 +16,9 @@ const ForgotPasswordPage = React.lazy(() => import('@/pages/auth/ForgotPasswordP
 // Main App Pages (Lazy loaded)
 const DashboardPage = React.lazy(() => import('@/pages/dashboard/DashboardPage'));
 const CustomersPage = React.lazy(() => import('@/pages/Customers'));
-// const CustomerDetailsPage = React.lazy(() => import('@/pages/customers/CustomerDetailsPage'));
+const CustomerDetailsPage = React.lazy(() => import('@/pages/customers/CustomerDetailsPage'));
 const PropertiesPage = React.lazy(() => import('@/pages/Properties'));
-// const PropertyDetailsPage = React.lazy(() => import('@/pages/properties/PropertyDetailsPage'));
+const PropertyDetailsPage = React.lazy(() => import('@/pages/properties/PropertyDetailsPage'));
 // const ProjectsPage = React.lazy(() => import('@/pages/projects/ProjectsPage'));
 // const ProjectDetailsPage = React.lazy(() => import('@/pages/projects/ProjectDetailsPage'));
 // const InteractionsPage = React.lazy(() => import('@/pages/interactions/InteractionsPage'));
@@ -27,7 +27,7 @@ const AnalyticsPage = React.lazy(() => import('@/pages/analytics/AnalyticsPage')
 const MarketingPage = React.lazy(() => import('@/pages/MarketingPage'));
 const FengShuiPage = React.lazy(() => import('@/pages/FengShuiPage'));
 // const TrainingPage = React.lazy(() => import('@/pages/training/TrainingPage'));
-// const SettingsPage = React.lazy(() => import('@/pages/settings/SettingsPage'));
+const SettingsPage = React.lazy(() => import('@/pages/settings/SettingsPage'));
 // const ProfilePage = React.lazy(() => import('@/pages/profile/ProfilePage'));
 const NotFoundPage = React.lazy(() => import('@/pages/NotFoundPage'));
 
@@ -144,14 +144,14 @@ const App: React.FC = () => {
             </ProtectedRoute>
           } />
           
-          {/* Customer Details - not implemented yet */}
-          {/* <Route path="/customers/:customerId" element={
+          {/* Customer Details */}
+          <Route path="/customers/:customerId" element={
             <ProtectedRoute>
               <Layout>
                 <CustomerDetailsPage />
               </Layout>
             </ProtectedRoute>
-          } /> */}
+          } />
 
           {/* Properties Routes */}
           <Route path="/properties" element={
@@ -162,14 +162,14 @@ const App: React.FC = () => {
             </ProtectedRoute>
           } />
           
-          {/* Property Details - not implemented yet */}
-          {/* <Route path="/properties/:propertyId" element={
+          {/* Property Details */}
+          <Route path="/properties/:propertyId" element={
             <ProtectedRoute>
               <Layout>
                 <PropertyDetailsPage />
               </Layout>
             </ProtectedRoute>
-          } /> */}
+          } />
 
           {/* Projects Routes */}
           {/* Projects - not implemented yet */}
@@ -245,8 +245,8 @@ const App: React.FC = () => {
             </ProtectedRoute>
           } /> */}
 
-          {/* Settings & Profile Routes - not implemented yet */}
-          {/* <Route path="/settings" element={
+          {/* Settings & Profile Routes */}
+          <Route path="/settings" element={
             <ProtectedRoute>
               <Layout>
                 <SettingsPage />
@@ -254,7 +254,8 @@ const App: React.FC = () => {
             </ProtectedRoute>
           } />
           
-          <Route path="/profile" element={
+          {/* Profile - not implemented yet */}
+          {/* <Route path="/profile" element={
             <ProtectedRoute>
               <Layout>
                 <ProfilePage />
