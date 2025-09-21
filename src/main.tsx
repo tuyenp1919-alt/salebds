@@ -33,15 +33,22 @@ const queryClient = new QueryClient({
 })
 
 // Error handler for error boundary
-const handleError = (error: Error, errorInfo: { componentStack: string }) => {
-  console.error('Application Error:', error, errorInfo)
+const handleError = (error: Error, errorInfo?: { componentStack: string }) => {
+  console.error('Application Error:', error, errorInfo);
+  
+  // Log error details for debugging
+  console.error('Error details:', {
+    message: error.message,
+    stack: error.stack,
+    componentStack: errorInfo?.componentStack
+  });
   
   // Here you could send error to monitoring service
   // e.g., Sentry, LogRocket, etc.
   if (process.env.NODE_ENV === 'production') {
     // sendErrorToMonitoring(error, errorInfo)
   }
-}
+};
 
 // Performance observer for monitoring
 if ('PerformanceObserver' in window && process.env.NODE_ENV === 'production') {

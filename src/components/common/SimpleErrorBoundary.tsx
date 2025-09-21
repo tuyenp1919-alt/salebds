@@ -18,12 +18,25 @@ class SimpleErrorBoundary extends Component<Props, State> {
   };
 
   public static getDerivedStateFromError(error: Error): State {
+    // Update state so the next render will show the fallback UI
+    console.error('Error caught by boundary:', error);
     return { hasError: true, error };
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
-    this.props.onError?.(error, errorInfo);
+    console.error('ErrorBoundary details:', {
+      error: error.toString(),
+      message: error.message,
+      stack: error.stack,
+      componentStack: errorInfo.componentStack
+    });
+    
+    // Call parent error handler if provided
+    try {
+      this.props.onError?.(error, errorInfo);
+    } catch (e) {
+      console.error('Error in onError handler:', e);
+    }
   }
 
   private resetErrorBoundary = () => {
