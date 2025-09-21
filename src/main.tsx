@@ -2,12 +2,12 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { ErrorBoundary } from 'react-error-boundary'
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+// import { ErrorBoundary } from 'react-error-boundary'
 import { Toaster } from 'react-hot-toast'
 
 import App from './App'
-import ErrorFallback from './components/common/ErrorFallback'
+// import ErrorFallback from './components/common/ErrorFallback'
 import { AuthProvider } from './contexts/AuthContext'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { NotificationProvider } from './contexts/NotificationContext'
@@ -73,13 +73,13 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <ErrorBoundary
+    {/* <ErrorBoundary
       FallbackComponent={ErrorFallback}
       onError={handleError}
       onReset={() => window.location.reload()}
-    >
+    > */}
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter basename="/salebds">
+        <BrowserRouter>
           <ThemeProvider>
             <AuthProvider>
               <NotificationProvider>
@@ -115,11 +115,11 @@ root.render(
         </BrowserRouter>
         
         {/* React Query DevTools - only in development */}
-        {process.env.NODE_ENV === 'development' && (
+        {/* {process.env.NODE_ENV === 'development' && (
           <ReactQueryDevtools initialIsOpen={false} />
-        )}
+        )} */}
       </QueryClientProvider>
-    </ErrorBoundary>
+    {/* </ErrorBoundary> */}
   </React.StrictMode>
 )
 

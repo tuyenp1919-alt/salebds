@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Notification } from '@/types';
+import { Notification as AppNotification } from '@/types';
 
 interface NotificationContextType {
-  notifications: Notification[];
+  notifications: AppNotification[];
   unreadCount: number;
-  addNotification: (notification: Omit<Notification, 'id' | 'createdAt'>) => void;
+  addNotification: (notification: Omit<AppNotification, 'id' | 'createdAt'>) => void;
   markAsRead: (notificationId: string) => void;
   markAllAsRead: () => void;
   removeNotification: (notificationId: string) => void;
@@ -26,7 +26,7 @@ interface NotificationProviderProps {
 }
 
 export const NotificationProvider: React.FC<NotificationProviderProps> = ({ children }) => {
-  const [notifications, setNotifications] = useState<Notification[]>(() => {
+  const [notifications, setNotifications] = useState<AppNotification[]>(() => {
     // Load notifications from localStorage on init
     const stored = localStorage.getItem('notifications');
     if (stored) {
@@ -73,8 +73,8 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     }
   }, []);
 
-  const addNotification = (notificationData: Omit<Notification, 'id' | 'createdAt'>) => {
-    const notification: Notification = {
+  const addNotification = (notificationData: Omit<AppNotification, 'id' | 'createdAt'>) => {
+    const notification: AppNotification = {
       ...notificationData,
       id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
       createdAt: new Date(),

@@ -617,3 +617,5 @@ export interface UserProgress {
 
 // Export all types for easy importing
 export * from './api';
+export * from './property';
+export * from './ai';
